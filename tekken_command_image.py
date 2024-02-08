@@ -5,7 +5,7 @@ from PIL import Image
 import aggdraw
 import pyparsing as pp
 import argparse
-import itertools
+import collections
 
 ### Must be a multiple of 8.
 base_width = 64
@@ -110,18 +110,18 @@ forward_up_symbol = (
 )
 
 neutral_symbol = (
-    32, 4,
-    16, 20,
-    4, 20,
-    20, 36,
-    8, 60,
-    32, 48,
-    56, 60,
-    44, 36,
-    60, 20,
-    48, 20,
-    32, 4,
-    16, 20,
+    32, 8,
+    24, 20,
+    12, 20,
+    24, 32,
+    12, 52,
+    32, 40,
+    52, 52,
+    40, 32,
+    52, 20,
+    40, 20,
+    32, 8,
+    24, 20,
 )
 
 delimiter_symbol = (
@@ -152,6 +152,17 @@ arrows = (None,
           back_symbol, None, foward_symbol,
           back_up_symbol, up_symbol, forward_up_symbol,
           )
+
+def flatten(l):
+    '''
+    Thanks for:
+    https://stackoverflow.com/questions/2158395/flatten-an-irregular-arbitrarily-nested-list-of-lists
+    '''
+    for el in l:
+        if isinstance(el, collections.abc.Iterable) and not isinstance(el, (str, bytes)):
+            yield from flatten(el)
+        else:
+            yield el
 
 def move_symbol(symbol, x):
     '''
@@ -220,9 +231,9 @@ def parse_command(cmd_str):
     command_pattern = pp.OneOrMore(pp.Or([directional_pattern, button_pattern, slip_pattern, delimitor_pattern]))
 
     parsed_list = command_pattern.parse_string(cmd_str)
-    # Nested list to simple list.
-    result = parsed_list ##list(itertools.chain.from_iterable(parsed_list))
-    return result
+    # Nested list to flat list.
+    result = flatten(parsed_list)
+    return list(result)
 
 def draw_command(output, command_list):
     command_count = len(command_list)
@@ -276,9 +287,9 @@ def draw_command(output, command_list):
 
 def main():
     desc = '''\
-Generate png-image from Tekken command text.
-Commands are supporting calculator notation.
-It corresponds as follows.
+Generate png-image input Tekken command text.
+Commands are supporting calculator-notation.
+This notation corresponds as follows.
 
  7 8 9   LP RP (both 'WP')
  4 n 6 
