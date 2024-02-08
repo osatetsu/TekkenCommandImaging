@@ -146,7 +146,7 @@ end_slip_symbol = (
     5, 60,
 )
 
-## arrows are orderd calculator-button.
+## arrows are orderd Tenkey.
 arrows = (None,
           back_down_symbol, down_symbol, foward_down_symbol,
           back_symbol, None, foward_symbol,
@@ -222,7 +222,7 @@ def draw_button(draw, base_x, pen, brush=None, **kwargs):
         draw.ellipse((base_x + params[key][0], params[key][1], base_x + params[key][2], params[key][3]), b, pen)
 
 def parse_command(cmd_str):
-    directional_pattern = pp.Char("12345678nN")
+    directional_pattern = pp.Char("12346789nN")
     button_pattern = pp.Or([pp.CaselessLiteral('LP'), pp.CaselessLiteral('RP'), pp.CaselessLiteral('WP'),
                             pp.CaselessLiteral('LK'), pp.CaselessLiteral('RK'), pp.CaselessLiteral('WK')])
     slip_pattern = pp.Group(pp.Literal("[") + button_pattern * 2 + pp.Literal("]"))
@@ -244,7 +244,7 @@ def draw_command(output, command_list):
     brush = aggdraw.Brush((255, 255, 255))
 
     nums = {'1':True, '2':True, '3':True, '4':True, '6':True, '7':True, '8':True, '9':True, }
-    buttons = {'LP':True, 'RP':True, 'LK':True, 'RK':True, }
+    buttons = {'LP':True, 'RP':True, 'LK':True, 'RK':True, 'WP':True, 'WK':True, }
 
     ## Drawing.
     index = 0
@@ -275,7 +275,7 @@ def draw_command(output, command_list):
             draw.line(a, brush)
         elif is_outline:
             a = move_symbol(symbol, index)
-            draw.line(a, None, pen)
+            draw.line(a, pen)
         index += 1
 
     base_x = base_width * index
@@ -288,7 +288,7 @@ def draw_command(output, command_list):
 def main():
     desc = '''\
 Generate png-image input Tekken command text.
-Commands are supporting calculator-notation.
+Commands are supporting Tenkey-notation.
 This notation corresponds as follows.
 
  7 8 9   LP RP (both 'WP')
@@ -299,12 +299,14 @@ e.g. Fujin-ken is '6n23RP'.
 '''
 
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=desc)
+    parser.add_argument("--debug", "-d", action='store_true', help="Output png filename.")
     parser.add_argument("--output", "-o", required=True, type=str, help="Output png filename.")
     parser.add_argument("command", type=str, help="Tekken command.")
     args = parser.parse_args()
 
     command = parse_command(args.command)
-#    print(command)
+    if args.debug:
+        print('parsed result:', command)
     draw_command(args.output, command)
 
 if __name__ == '__main__':
