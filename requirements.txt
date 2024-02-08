@@ -1,0 +1,3 @@
+pillow
+aggdraw
+pyparsing
