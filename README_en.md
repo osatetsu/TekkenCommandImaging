@@ -37,6 +37,8 @@ Directional-key and buttons:
  1 2 3   LK RK (Both kick is 'WK')
 ```
 
+![dir and buttun](images/dir-button.png)
+
 ### Example: Fujin-ken
 
 ```.sh

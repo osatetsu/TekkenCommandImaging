@@ -46,8 +46,6 @@ python tekken_command_image.py -o 出力ファイル名 'コマンド'
     * コマンドの区切りは、 `>` または `,`
     * 方向、および、ボタンの境目を見やすくするために ` ` (半角スペース)を使用可能
 
-
-
 方向キーとボタンの関係
 
 ```
@@ -55,8 +53,7 @@ python tekken_command_image.py -o 出力ファイル名 'コマンド'
  4 n 6 
  1 2 3   LK RK (両キック 'WK')
 ```
-
-
+![方向とボタン](images/dir-button.png)
 
 ### 例: 風神拳
 
