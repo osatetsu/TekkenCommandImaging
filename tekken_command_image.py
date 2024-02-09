@@ -113,11 +113,11 @@ neutral_symbol = (
     32, 8,
     24, 20,
     12, 20,
-    24, 32,
+    20, 32,
     12, 52,
     32, 40,
     52, 52,
-    40, 32,
+    44, 32,
     52, 20,
     40, 20,
     32, 8,
@@ -190,8 +190,8 @@ def draw_button(draw, base_x, pen, brush=None, **kwargs):
         pushed : Accept all Punch and Kick notation. e.g. 'LP', 'LP+RK' etc...
     '''
     params = {
-        'LP': [4, 4, 28, 28,],
-        'LK': [4, 36, 28, 60,],
+        'LP': [8, 4, 32, 28,],
+        'LK': [8, 36, 32, 60,],
         'RP': [36, 4, 60, 28,],
         'RK': [36, 36, 60, 60,],
     }
