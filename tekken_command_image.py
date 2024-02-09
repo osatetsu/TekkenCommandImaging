@@ -304,7 +304,7 @@ e.g. Fujin-ken is '6n23RP'.
 
     ## Arguments
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=desc)
-    parser.add_argument("--debug", "-d", action='store_true', help="Output png filename.")
+    parser.add_argument("--debug", "-d", action='store_true', help="Enable debug message.")
     parser.add_argument("--output", "-o", required=True, type=str, help="Output png filename.")
     fg_group = parser.add_mutually_exclusive_group()
     fg_group.add_argument("--fg-white", action='store_true', help='Changed foreground color to White (default).')
