@@ -4,7 +4,10 @@ Tekken game command imager.
 
 English version is [README_en](README_en.md).
 
-鉄拳初心者のみなさんが電卓表記されても分からないということで、その手伝いになればと思い作ったものです。あるいは、生成した画像は動画やブログ、SNSなどでもご利用いただけるかと思います。
+このツールは格闘ゲームの鉄拳シリーズで使用されるコマンド表記を、背景透過の png 画像にするものです。
+
+鉄拳初心者のみなさんが電卓表記されても分からないということで、その一助になればと思い作成しています。
+生成した画像は動画やブログ、SNSなどでもご利用いただけます。
 
 ## インストール
 
@@ -93,11 +96,11 @@ python tekken_command_image.py -o output.png '3RP > 9RK > 9LK > 3LKRP1RP > 66 > 
 
 ## ライセンス
 
-GPLv3 です。
+ソースコード、および、ドキュメントは GPLv3 です。
 
 ## 最後に
 
- * 機能追加のご要望、あるいは、不具合報告は Issues へしていただければと思います。
+ * 機能追加のご要望、あるいは、不具合報告は [Issues](https://github.com/osatetsu/TekkenCommandImaging/issues) へしていただければと思います。
  * ko-fi にてご寄付いただけると、活動の励みになります。
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E1U0BU1)

@@ -1,5 +1,8 @@
 # Tekken game command imager
 
+This tool generate png-image from "command".
+That command is used fighting game "Tekken" series.
+
 ## Install / Requirement
 
 Please install python 3.12 or later.
@@ -70,11 +73,11 @@ python tekken_command_image.py -o output.png '3RP > 9RK > 9LK > 3LKRP1RP > 66 > 
 
 ## License
 
-GPLv3
+Source code and documents are GPLv3.
 
 ## Notification
 
- * If you have any requests for additional features or report bugs, please submit them to Issues.
+ * If you have any requests for additional features or report bugs, please submit them to [Issues](https://github.com/osatetsu/TekkenCommandImaging/issues).
  * If you can donate through ko-fi, it will encourage my activities.
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E1U0BU1)
