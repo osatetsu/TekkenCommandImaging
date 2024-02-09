@@ -239,13 +239,13 @@ def parse_command(cmd_str):
     result = flatten(parsed_list)
     return list(result)
 
-def draw_command(output, command_list):
+def draw_command(output, command_list, fg_color):
     command_count = len(command_list)
     im = Image.new('RGBA', (base_width * command_count, base_height), (0, 0, 0, 0))
     draw = aggdraw.Draw(im)
 
-    pen = aggdraw.Pen((255, 255, 255), width=4)
-    brush = aggdraw.Brush((255, 255, 255))
+    pen = aggdraw.Pen(fg_color, width=4)
+    brush = aggdraw.Brush(fg_color)
 
     nums = {'1':True, '2':True, '3':True, '4':True, '6':True, '7':True, '8':True, '9':True, }
     buttons = {'LP':True, 'RP':True, 'LK':True, 'RK':True, 'WP':True, 'WK':True, }
@@ -302,16 +302,33 @@ This notation corresponds as follows.
 e.g. Fujin-ken is '6n23RP'.
 '''
 
+    ## Arguments
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=desc)
     parser.add_argument("--debug", "-d", action='store_true', help="Output png filename.")
     parser.add_argument("--output", "-o", required=True, type=str, help="Output png filename.")
+    fg_group = parser.add_mutually_exclusive_group()
+    fg_group.add_argument("--fg-white", action='store_true', help='Changed foreground color to White (default).')
+    fg_group.add_argument("--fg-black", action='store_true', help='Changed foreground color to Black.')
+    fg_group.add_argument("--fg-grey", action='store_true', help='Changed foreground color to Grey/Gray.')
+    fg_group.add_argument("--fg-gray", action='store_true', help='Changed foreground color to Grey/Gray.')
     parser.add_argument("command", type=str, help="Tekken command.")
     args = parser.parse_args()
 
+    fg_color = (255, 255, 255)
+    if args.fg_white:
+        pass
+    elif args.fg_black:
+        fg_color = (0, 0, 0)
+    elif args.fg_grey or args.fg_gray:
+        fg_color = (128, 128, 128)
+
+    ## Tekken command.
     command = parse_command(args.command)
     if args.debug:
         print('parsed result:', command)
-    draw_command(args.output, command)
+    
+    ## Draw command.
+    draw_command(args.output, command, fg_color)
 
 if __name__ == '__main__':
     main()
