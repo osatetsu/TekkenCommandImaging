@@ -187,6 +187,7 @@ def draw_button(draw, base_x, pen, brush=None, **kwargs):
         LK : Push Left-Kick.
         RK : Push Right-Kick.
         WK : LK and RK.
+        pushed : Accept all Punch and Kick notation. e.g. 'LP', 'LP+RK' etc...
     '''
     params = {
         'LP': [4, 4, 28, 28,],
@@ -197,7 +198,8 @@ def draw_button(draw, base_x, pen, brush=None, **kwargs):
 
     button_dic = {}
     if 'pushed' in kwargs:
-        button_dic = kwargs['pushed']
+        b = kwargs['pushed']
+        button_dic = {button_name: True for button_name in b.split('+')}
     else:
         button_dic = kwargs
 
@@ -227,8 +229,10 @@ def parse_command(cmd_str):
                             pp.CaselessLiteral('LK'), pp.CaselessLiteral('RK'), pp.CaselessLiteral('WK')])
     slip_pattern = pp.Group(pp.Literal("[") + button_pattern * 2 + pp.Literal("]"))
     delimitor_pattern = pp.Or([pp.Literal('>'), pp.Literal(',')])
+    sametime_op = pp.one_of('+')
+    sametime_button = pp.Combine(button_pattern + (sametime_op + button_pattern)[1, ...]).ignore_whitespace(True)
 
-    command_pattern = pp.OneOrMore(pp.Or([directional_pattern, button_pattern, slip_pattern, delimitor_pattern]))
+    command_pattern = pp.OneOrMore(pp.Or([directional_pattern, button_pattern, slip_pattern, delimitor_pattern, sametime_button]))
 
     parsed_list = command_pattern.parse_string(cmd_str)
     # Nested list to flat list.
@@ -258,8 +262,8 @@ def draw_command(output, command_list):
         elif cmd == 'n' or cmd == 'N':
             symbol = neutral_symbol
             is_paint = True
-        elif cmd in buttons:
-            draw_button(draw, base_width * index, pen, brush, pushed={cmd:True})
+        elif len(cmd) >= 2 and cmd[0:2] in buttons:
+            draw_button(draw, base_width * index, pen, brush, pushed=cmd)
         elif cmd == '>' or cmd == ',':
             symbol = delimiter_symbol
             is_paint = True
