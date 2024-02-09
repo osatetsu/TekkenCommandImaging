@@ -45,6 +45,7 @@ python tekken_command_image.py -o 出力ファイル名 'コマンド'
     * 方向は、1234n6789
     * ボタンは、LP, RP, WP, LK, RK, WK
     * 大文字、小文字はどちらも使用可能で、混在してもOK
+    * ボタンの同時押しは `+` を使って、 `LP+RK` などとする
     * スライド表記は `[ ]` の間に記述
     * コマンドの区切りは、 `>` または `,`
     * 方向、および、ボタンの境目を見やすくするために ` ` (半角スペース)を使用可能
@@ -58,41 +59,48 @@ python tekken_command_image.py -o 出力ファイル名 'コマンド'
 ```
 ![方向とボタン](images/dir-button.png)
 
-### 例: 風神拳
+### 例1: 風神拳
 
 ニュートラルがあるコマンドの例として。
 
 ```.sh
-python tekken_command_image.py -o images/fujinken.png '6n23RK'
+python tekken_command_image.py -o fujinken.png '6n23RK'
 ```
 
 ![風神拳](images/fujinken.png)
 
-### 例: 箭疾歩(ぜんしっぽ) - Tekken 7
+### 例2: 箭疾歩(ぜんしっぽ) - Tekken 7
 
 スライド入力(素早く攻撃ボタンを連続で押す)の例として。
 パンチやキック表記は小文字でも表記可能です。
 
 ```.sh
-python tekken_command_image.py -o images/zenshippo.png '6[lklp]'
+python tekken_command_image.py -o zenshippo.png '6[lklp]'
 ```
 
 ![箭疾歩](images/zenshippo.png)
 
-### 例: ニーナ空中コンボ
+### 例3: ニーナ空中コンボ
 
 コマンドが長大な例として。
 
 ```.sh
-python tekken_command_image.py -o output.png '3RP > 9RK > 9LK > 3LKRP1RP > 66 > 3LKRP4RK > 66 > 236RKLKWP' 
+python tekken_command_image.py -o nina_combo.png '3RP > 9RK > 9LK > 3LKRP1RP > 66 > 3LKRP4RK > 66 > 236RKLKWP' 
 ```
 
 ![Nina combo](images/nina_combo.png)
 
+### 例4: 挑発ジェッパ
 
-## 制限
+ボタンの同時押しの例として。なお、このコマンドは鉄拳8でも成功するかは分からないです。
 
- 1. 現状、ボタンの同時押し表記(例: `LP+RK`)は、未対応です。
+同時押し記号の `+` は、前後にスペースを入れても受け付けます。
+
+```.sh
+python tekken_command_image.py -d -o bryan_combo.png 'LP+LK + RK > 64RP'
+```
+
+![Bryan combo](images/bryan_combo.png)
 
 ## ライセンス
 

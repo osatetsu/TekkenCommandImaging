@@ -27,7 +27,8 @@ Feature:
  * Commands are supporting Tenkey-style.
     * Directional `1234n6789`. See below.
     * Button `LP, RP, WP, LK, RK, WK`
-    * Ignore case.
+    * Ignore cases. You can use both uppercase and lowercase.
+    * Use `+` to press multiple buttons at the same time.
     * Slide syntax `[ ]` 
     * Command delimiter are `>` or `,`
     * You can use ` ` (white space). To improve visibility.
@@ -42,7 +43,7 @@ Directional-key and buttons:
 
 ![dir and buttun](images/dir-button.png)
 
-### Example: Fujin-ken
+### Example No.1: Fujin-ken
 
 ```.sh
 python tekken_command_image.py -o images/fujinken.png '6n23RK'
@@ -50,7 +51,7 @@ python tekken_command_image.py -o images/fujinken.png '6n23RK'
 
 ![Fujin-ken](images/fujinken.png)
 
-### Example: Zenshippo - Tekken 7
+### Example No.2: Zenshippo - Tekken 7
 
 ```.sh
 python tekken_command_image.py -o images/zenshippo.png '6[lklp]'
@@ -58,7 +59,7 @@ python tekken_command_image.py -o images/zenshippo.png '6[lklp]'
 
 ![Zenshippo](images/zenshippo.png)
 
-### Example: Nina combo
+### Example No.3: Nina combo
 
 ```.sh
 python tekken_command_image.py -o output.png '3RP > 9RK > 9LK > 3LKRP1RP > 66 > 3LKRP4RK > 66 > 236RKLKWP' 
@@ -66,10 +67,16 @@ python tekken_command_image.py -o output.png '3RP > 9RK > 9LK > 3LKRP1RP > 66 > 
 
 ![Nina combo](images/nina_combo.png)
 
+### Example No.4: Bryan "Fury"
 
-## Limitation
+Pressing multiple buttons at the same time.
+But I don't know if it's possible in Tekken 8 as well.
 
- 1. Currently, simultaneous button press notation (e.g. `LP+RK`) is not yet supported.
+```.sh
+python tekken_command_image.py -d -o bryan_combo.png 'LP+LK + RK > 64RP'
+```
+
+![Bryan combo](images/bryan_combo.png)
 
 ## License
 
