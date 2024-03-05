@@ -1,7 +1,7 @@
 #! python
 
 import sys
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import aggdraw
 import pyparsing as pp
 import argparse
@@ -171,7 +171,7 @@ def move_symbol(symbol, x):
     is_x = True
     for p in symbol:
         if is_x:
-            result.append(p + (base_width * x))
+            result.append(p + x)
         else:
             result.append(p)
         is_x = not is_x
@@ -223,8 +223,32 @@ def draw_button(draw, base_x, pen, brush=None, **kwargs):
             b = brush
         draw.ellipse((base_x + params[key][0], params[key][1], base_x + params[key][2], params[key][3]), b, pen)
 
+def draw_text(img, base_x, text, font, fg_color, **kwargs):
+    '''
+    params:
+        img:
+        base_x:
+        font:
+        pen:
+        brush:
+        kwargs:
+    '''
+    w, h = img.size
+    draw = ImageDraw.Draw(img)
+    box = draw.textbbox((base_x, margin), text, font=font)
+    text_w = box[2] - box[0]
+    if base_width < text_w:
+        new_img = Image.new('RGBA', (w + text_w, base_height), (0, 0, 0, 0))
+        new_img.paste(img, (0, 0))
+        img = new_img
+        draw = ImageDraw.Draw(img)
+
+    draw.text((base_x, margin), text, fg_color, font=font)
+    return (img, text_w)
+
 def parse_command(cmd_str):
     directional_pattern = pp.Char("12346789nN")
+    text = pp.quotedString.setParseAction( pp.removeQuotes )
     button_pattern = pp.Or([pp.CaselessLiteral('LP'), pp.CaselessLiteral('RP'), pp.CaselessLiteral('WP'),
                             pp.CaselessLiteral('LK'), pp.CaselessLiteral('RK'), pp.CaselessLiteral('WK')])
     slip_pattern = pp.Group(pp.Literal("[") + button_pattern * 2 + pp.Literal("]"))
@@ -232,30 +256,33 @@ def parse_command(cmd_str):
     sametime_op = pp.one_of('+')
     sametime_button = pp.Combine(button_pattern + (sametime_op + button_pattern)[1, ...]).ignore_whitespace(True)
 
-    command_pattern = pp.OneOrMore(pp.Or([directional_pattern, button_pattern, slip_pattern, delimitor_pattern, sametime_button]))
+    command_pattern = pp.OneOrMore(pp.Or([directional_pattern, button_pattern, slip_pattern, delimitor_pattern, sametime_button, text]))
 
     parsed_list = command_pattern.parse_string(cmd_str)
     # Nested list to flat list.
     result = flatten(parsed_list)
     return list(result)
 
-def draw_command(output, command_list, fg_color):
+def draw_command(output, ttf, font_size, ttc_index, command_list, fg_color):
     command_count = len(command_list)
     im = Image.new('RGBA', (base_width * command_count, base_height), (0, 0, 0, 0))
     draw = aggdraw.Draw(im)
 
     pen = aggdraw.Pen(fg_color, width=4)
     brush = aggdraw.Brush(fg_color)
+    font = None
 
     nums = {'1':True, '2':True, '3':True, '4':True, '6':True, '7':True, '8':True, '9':True, }
     buttons = {'LP':True, 'RP':True, 'LK':True, 'RK':True, 'WP':True, 'WK':True, }
 
     ## Drawing.
     index = 0
+    base_x = 0
     for cmd in command_list:
         symbol = None
         is_paint = False
         is_outline = False
+        draw_width = base_width
         if cmd in nums:
             symbol = arrows[int(cmd)]
             is_paint = True
@@ -263,7 +290,7 @@ def draw_command(output, command_list, fg_color):
             symbol = neutral_symbol
             is_paint = True
         elif len(cmd) >= 2 and cmd[0:2] in buttons:
-            draw_button(draw, base_width * index, pen, brush, pushed=cmd)
+            draw_button(draw, base_x, pen, brush, pushed=cmd)
         elif cmd == '>' or cmd == ',':
             symbol = delimiter_symbol
             is_paint = True
@@ -273,17 +300,22 @@ def draw_command(output, command_list, fg_color):
         elif cmd == ']':
             symbol = end_slip_symbol
             is_outline = True
+        else:
+            ### any text
+            if font is None:
+                font = ImageFont.truetype(ttf, font_size, index=ttc_index)
+            draw.flush()
+            (im, draw_width) = draw_text(im, base_x, cmd, font, fg_color)
+            draw = aggdraw.Draw(im)
 
         if is_paint:
-            a = move_symbol(symbol, index)
+            a = move_symbol(symbol, base_x)
             draw.line(a, brush)
         elif is_outline:
-            a = move_symbol(symbol, index)
+            a = move_symbol(symbol, base_x)
             draw.line(a, pen)
         index += 1
-
-    base_x = base_width * index
-    draw_button(draw, base_x, pen, brush, LP=True, RK=True)
+        base_x += draw_width
 
     ### Output
     draw.flush()
@@ -306,6 +338,9 @@ e.g. Fujin-ken is '6n23RP'.
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=desc)
     parser.add_argument("--debug", "-d", action='store_true', help="Enable debug message.")
     parser.add_argument("--output", "-o", required=True, type=str, help="Output png filename.")
+    parser.add_argument("--truetype-font", type=str, default="YuGothR.ttc", help="TrueType font file for text drawing.")
+    parser.add_argument("--font-size", type=int, default=48, help="TrueType font file for text drawing.")
+    parser.add_argument("--ttc-index", type=int, default=1, help="TrueType Collection (*.TTC) index.")
     fg_group = parser.add_mutually_exclusive_group()
     fg_group.add_argument("--fg-white", action='store_true', help='Changed foreground color to White (default).')
     fg_group.add_argument("--fg-black", action='store_true', help='Changed foreground color to Black.')
@@ -328,7 +363,7 @@ e.g. Fujin-ken is '6n23RP'.
         print('parsed result:', command)
     
     ## Draw command.
-    draw_command(args.output, command, fg_color)
+    draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color)
 
 if __name__ == '__main__':
     main()
