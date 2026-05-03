@@ -82,7 +82,7 @@ e.g. Fujin-ken is '6n23RP'.
     if args.render == 'png':
         draw_png.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color)
     elif args.render == 'svg':
-        pass
+        draw_svg.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color)
 
 if __name__ == '__main__':
     main()

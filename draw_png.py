@@ -4,17 +4,30 @@ from PIL import Image, ImageDraw, ImageFont
 import aggdraw
 
 import shapes
-import utils
+
+def move_symbol(symbol, x):
+    '''
+    '''
+    result = []
+    is_x = True
+    for p in symbol:
+        if is_x:
+            result.append(p + x)
+        else:
+            result.append(p)
+        is_x = not is_x
+
+    return tuple(result)
 
 def draw_button(draw, base_x, pen, brush=None, **kwargs):
     '''
     kwargs:
         LP : Push Left-Punch. When exists this key painted by 'brush'.
         RP : Push Right-Punch.
-        WP : LP and RP.
+        WP : Both LP and RP.
         LK : Push Left-Kick.
         RK : Push Right-Kick.
-        WK : LK and RK.
+        WK : Both LK and RK.
         pushed : Accept all Punch and Kick notation. e.g. 'LP', 'LP+RK' etc...
     '''
     params = {
@@ -120,10 +133,10 @@ def draw_command(output, ttf, font_size, ttc_index, command_list, fg_color):
             draw = aggdraw.Draw(im)
 
         if is_paint:
-            a = utils.move_symbol(symbol, base_x)
+            a = move_symbol(symbol, base_x)
             draw.line(a, brush)
         elif is_outline:
-            a = utils.move_symbol(symbol, base_x)
+            a = move_symbol(symbol, base_x)
             draw.line(a, pen)
         index += 1
         base_x += draw_width
