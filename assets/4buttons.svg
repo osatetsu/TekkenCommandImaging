@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64mm"
+   height="64mm"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   sodipodi:docname="4buttons.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="false"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="3.9508097"
+     inkscape:cx="46.066506"
+     inkscape:cy="111.49613"
+     inkscape:window-width="2560"
+     inkscape:window-height="1351"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:clip-to-page="false"
+     labelstyle="default"
+     inkscape:lockguides="false">
+    <inkscape:grid
+       id="grid3"
+       units="mm"
+       originx="1.9999999"
+       originy="1.9999999"
+       spacingx="0.99999998"
+       spacingy="1"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true"
+       dotted="true" />
+    <inkscape:grid
+       type="axonomgrid"
+       id="grid4"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="0.99999997"
+       spacingy="0.99999997"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       dotted="false"
+       gridanglex="30"
+       gridanglez="30"
+       enabled="false"
+       visible="true" />
+    <inkscape:grid
+       type="modular"
+       id="grid5"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="39.999999"
+       spacingy="39.999999"
+       empcolor="#0047cb"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="0"
+       marginx="0"
+       marginy="0"
+       gapx="9.9999997"
+       gapy="9.9999997"
+       enabled="false"
+       visible="true" />
+    <inkscape:grid
+       id="grid6"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="0.99999997"
+       spacingy="0.99999997"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="false"
+       visible="true" />
+    <inkscape:grid
+       id="grid7"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="0.99999997"
+       spacingy="0.99999997"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="false"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-4.4258013,-7.4206094)">
+    <circle
+       style="fill:#ffffff;fill-opacity:1;stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path7"
+       cx="20.425802"
+       cy="28.42061"
+       r="14" />
+    <circle
+       style="fill:#ffffff;fill-opacity:1;stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path7-7"
+       cx="24.425804"
+       cy="56.201534"
+       r="14" />
+    <circle
+       style="fill:#ffffff;fill-opacity:1;stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path7-8"
+       cx="48.4258"
+       cy="22.639683"
+       r="14" />
+    <circle
+       style="fill:#ffffff;fill-opacity:1;stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path7-7-5"
+       cx="52.425804"
+       cy="50.420609"
+       r="14" />
+  </g>
+</svg>
