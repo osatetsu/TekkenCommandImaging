@@ -1,11 +1,12 @@
 #! python
 #
+# # 方針
 # SVG ファイルは XML として扱う。
 # 各エレメント(矢印などの図形)は、ローカル座標から transform で移動、回転させる。
-# これらは、SVG ファイルを読み取って編集するライブラリが python に存在しないため、代替手段である。
+# これらは、SVG ファイルを読み取って編集するライブラリが python に存在しないための代替手段である。
 #
 # # 重要
-# - 読み込むSVGファイル内の単位はすべて削除すること。例えばmm単位だと、メートルでもインチでも無いおかしな位置として計算されるため。
+# - 読み込むSVGファイル内の単位はすべて削除するか、px単位にすること。DPI計算により意図しない結果になるため。
 #
 
 import copy
@@ -67,6 +68,21 @@ def get_text_bounding_box(text, font_path, font_size):
     height = bottom - top
     
     return width, height
+
+def debug_rect(dst, x, y, w, h, stroke_color='red', stroke_width=1):
+    '''
+    Draw a debug rectangle on the SVG.
+    Maybe, you can see bounding box of the element.
+    '''
+    rect = ET.Element('rect')
+    rect.set('x', str(x))
+    rect.set('y', str(y))
+    rect.set('width', str(w))
+    rect.set('height', str(h))
+    rect.set('fill-opacity', '0%')
+    rect.set('stroke', stroke_color)
+    rect.set('stroke-width', str(stroke_width))
+    dst.append(rect)
 
 def load_element(svg_path, target_id):
     tree = ET.parse(svg_path)
@@ -225,8 +241,6 @@ def load_shapes():
     h = obj['box']['y'] + obj['box']['h']
     if ymax < h:
         ymax = h
-    if (is_debug):
-        logger.debug(f"=== delimiter: x:{obj['box']['x']}, y:{obj['box']['y']}, w:{obj['box']['w']}, h:{obj['box']['h']}")
 
     ### Buttuns ###
     obj = load_buttons_element('assets/4buttons.svg')
@@ -247,7 +261,7 @@ def replace_fill_style(element, fill_color):
         element.set('style', ';'.join(styles))
     return
 
-def draw_button(img, button_shapes, base_x, margin_width=MARGIN_WIDTH, push_color='#000000', **kwargs):
+def draw_button(img, button_shapes, base_x, base_y, margin_width=MARGIN_WIDTH, push_color='#000000', **kwargs):
     '''
     kwargs:
         LP : Push Left-Punch.
@@ -292,18 +306,18 @@ def draw_button(img, button_shapes, base_x, margin_width=MARGIN_WIDTH, push_colo
         if key in push_buttons:
             btn.set('fill', push_color)
             replace_fill_style(btn, push_color)
-        new_transform = f"translate({draw_x}, 0)"
+        new_transform = f"translate({draw_x}, {base_y})"
         btn.set('transform', new_transform)
         img.append(btn)
 
     return button_shapes['all_bbox']['x'] + button_shapes['all_bbox']['w']
 
-def draw_shape(img, shape, base_x, margin_width=MARGIN_WIDTH, fill_color='#000000'):
+def draw_shape(img, shape, base_x, base_y, need_h_mirror=False, margin_width=MARGIN_WIDTH, fill_color='#000000', **kwargs):
     '''
     '''
-    return draw_shape_rotate(img, shape, base_x, rotate_deg = 0, margin_width=margin_width, fill_color=fill_color)
+    return draw_shape_rotate(img, shape, base_x, base_y, rotate_deg = 0, need_h_mirror=need_h_mirror, margin_width=margin_width, fill_color=fill_color)
 
-def draw_shape_rotate(img, shape, base_x, rotate_deg, margin_width=MARGIN_WIDTH, fill_color='#000000'):
+def draw_shape_rotate(img, shape, base_x, base_y, rotate_deg, need_h_mirror=False, margin_width=MARGIN_WIDTH, fill_color='#000000', **kwargs):
     '''
     '''
 
@@ -311,16 +325,21 @@ def draw_shape_rotate(img, shape, base_x, rotate_deg, margin_width=MARGIN_WIDTH,
     box = shape['box']
 
     obj = copy.deepcopy(shape['element'])
-    if (int(rotate_deg) == 0):
-        new_transform = f"translate({draw_x}, 0)"
-    else:
-        new_transform = f" translate({draw_x}, 0) rotate({rotate_deg}, {box['cx']}, {box['cy']})"
-    obj.set('transform', new_transform)
+    translate = f"translate({draw_x}, {base_y})"
+    rotate = ''
+    mirror = ''
+
+    if (int(rotate_deg) != 0):
+        rotate = f"rotate({rotate_deg}, {box['cx']}, {box['cy']})"
+    if (need_h_mirror):
+        mirror = f"scale(-1, 1) translate({-box['cx'] * 2}, 0)"
+
+    obj.set('transform', f"{translate} {rotate} {mirror}")
     img.append(obj)
 
     return shape['box']['w']
 
-def draw_text(dst, base_x, text, ymax, font_size=32, margin_width=MARGIN_WIDTH, **kwargs):
+def draw_text(dst, base_x, ymax, text, font_size=32, margin_width=MARGIN_WIDTH, **kwargs):
     '''
     dst:
     base_x:
@@ -366,59 +385,58 @@ def draw_command(output, ttf, font_size, ttc_index, command_list, fg_color, **kw
     dst = shapes['root']
     font = None
 
-    nums = {'1':True, '2':True, '3':True, '4':True, '6':True, '7':True, '8':True, '9':True, }
+    nums = {'1':True, '2':True, '3':True, '4':True, '6':False, '7':True, '8':True, '9':True, }
     buttons = {'LP':True, 'RP':True, 'LK':True, 'RK':True, 'WP':True, 'WK':True, }
     direction_to_deg = [None, 45 * 3, 45 * 2, 45 * 1, 45 * 4, None, 0, 45 * 5, 45 * 6, 45 * 7]
 
     ## Drawing.
     index = 0
     base_x = 0
+    base_y = MARGIN_WIDTH
     for cmd in command_list:
         symbol = None
         margin = MARGIN_WIDTH
         if cmd in nums:
             symbol = shapes['arrow']
-            draw_width = draw_shape_rotate(dst, symbol, base_x, direction_to_deg[int(cmd)], margin_width=margin)
-            logger.debug(f"{cmd}, {draw_width}, {symbol}")
+            y = base_y
+            draw_width = draw_shape_rotate(dst, symbol, base_x, y, direction_to_deg[int(cmd)], margin_width=margin)
+            logger.debug(f"{cmd}, {draw_width}, {y}, {symbol}")
         elif cmd == 'n' or cmd == 'N':
             symbol = shapes['neutral']
-            draw_width = draw_shape(dst, symbol, base_x, margin_width=margin)
+            y = base_y #symbol['box']['y']
+            draw_width = draw_shape(dst, symbol, base_x, y, margin_width=margin)
             logger.debug(f"{cmd}, {draw_width}, {symbol}")
         elif len(cmd) >= 2 and cmd[0:2] in buttons:
-            draw_width = draw_button(dst, shapes['buttons'], base_x, margin_width=margin, pushed=cmd)
+            draw_width = draw_button(dst, shapes['buttons'], base_x, base_y, margin_width=margin, pushed=cmd)
             logger.debug(f"{cmd}, {draw_width}, {symbol}")
-        elif cmd == '>' or cmd == ',':
+        elif cmd == '>':
             symbol = shapes['delimiter']
-            draw_width = draw_shape(dst, symbol, base_x, margin_width=margin)
+            y = base_y #(symbol['box']['y'] + symbol['box']['h']) / 2
+            draw_width = draw_shape(dst, symbol, base_x, y, margin_width=margin)
             logger.debug(f"{cmd}, {draw_width}, {symbol}")
         elif cmd == '[':
             symbol = shapes['bracket']
-            draw_width = draw_shape(dst, symbol, base_x, margin_width=margin)
+            y = base_y #(symbol['box']['y'] + symbol['box']['h']) / 2
+            draw_width = draw_shape(dst, symbol, base_x, y, margin_width=margin)
             logger.debug(f"{cmd}, {draw_width}, {symbol}")
         elif cmd == ']':
-            symbol = shapes['right_bracket']
-            draw_width = draw_shape(dst, symbol, base_x, margin_width=margin)
+            symbol = shapes['bracket']
+            y = base_y #(symbol['box']['y'] + symbol['box']['h']) / 2
+            draw_width = draw_shape(dst, symbol, base_x, y, need_h_mirror=True, margin_width=margin)
             logger.debug(f"{cmd}, {draw_width}, {symbol}")
         else:
-            draw_width = draw_text(dst, base_x, cmd, ymax, margin_width=margin)
+            y = ymax + base_y
+            draw_width = draw_text(dst, base_x, y, cmd, margin_width=margin)
             logger.debug(f"{cmd}, {draw_width}, {symbol}")
         if (is_debug):
             ## draw bounding box
-            rect = ET.Element('rect')
-            rect.set('x', str(base_x + MARGIN_WIDTH))
-            rect.set('y', '0')
-            rect.set('width', f"{draw_width}")
-            rect.set('height', f"{ymax - 1}")
-            rect.set('fill-opacity', '0%')
-            rect.set('stroke', 'red')
-            rect.set('stroke-width', '1')
-            dst.append(rect)
+            debug_rect(dst, base_x + margin, base_y, draw_width, ymax - 1, stroke_color='red', stroke_width=1)
         index += 1
         base_x += draw_width + margin
 
     ### Output
     view_w = base_x + MARGIN_WIDTH
-    view_h = ymax + MARGIN_WIDTH
+    view_h = ymax + MARGIN_WIDTH * 2
     dst.set('width', f"{view_w}")
     dst.set('height', f"{view_h}")
     dst.set('viewBox', f"{0} {0} {view_w} {view_h}")
