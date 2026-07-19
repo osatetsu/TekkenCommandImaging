@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
-   sodipodi:docname="parenthesis.svg"
+   sodipodi:docname="delimiter.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="true"
      inkscape:zoom="2.8548345"
-     inkscape:cx="94.57641"
-     inkscape:cy="113.31655"
+     inkscape:cx="81.615939"
+     inkscape:cy="116.81938"
      inkscape:window-width="2560"
      inkscape:window-height="1351"
      inkscape:window-x="-9"
@@ -49,15 +49,15 @@
        visible="true" />
   </sodipodi:namedview>
   <defs
-     id="defs1" />
+     id="def-1" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
     <path
+       style="fill:none;fill-opacity:0.98172;stroke:#a3a3a3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:9"
+       d="m 28.000001,24.000001 8,8 -8,8"
        id="target"
-       style="fill:#ffffff;fill-opacity:0.98172;stroke:#a3a3a3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:9"
-       d="m 28.000001,4.0000001 h 8 c 0,0 -3.999999,18.5719099 -3.999999,28.0000009 0,9.42809 3.999999,27.999999 3.999999,27.999999 h -8 z"
-       sodipodi:nodetypes="ccsccc" />
+       sodipodi:nodetypes="ccc" />
   </g>
 </svg>

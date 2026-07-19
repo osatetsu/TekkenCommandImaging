@@ -2,8 +2,8 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="64mm"
-   height="64mm"
+   width="64"
+   height="64"
    viewBox="0 0 64 64"
    version="1.1"
    id="svg1"
@@ -52,7 +52,7 @@
   <path
      sodipodi:type="star"
      style="fill:#ffffff;fill-opacity:0.98172;stroke:#a3a3a3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:9;stroke-dasharray:none;stroke-dashoffset:0"
-     id="path2"
+     id="target"
      inkscape:flatsided="false"
      sodipodi:sides="5"
      sodipodi:cx="15.591518"

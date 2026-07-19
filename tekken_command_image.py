@@ -56,7 +56,7 @@ e.g. Fujin-ken is '6n23RP'.
     parser.add_argument("--truetype-font", type=str, default="YuGothR.ttc", help="TrueType font file for text drawing.")
     parser.add_argument("--font-size", type=int, default=48, help="TrueType font file for text drawing.")
     parser.add_argument("--ttc-index", type=int, default=1, help="TrueType Collection (*.TTC) index.")
-    parser.add_argument("--render", choices=['png', 'svg'], default='png', help="Output format.")
+    parser.add_argument("--render", choices=['png', 'svg'], default='svg', help="Output format.")
     fg_group = parser.add_mutually_exclusive_group()
     fg_group.add_argument("--fg-white", action='store_true', help='Changed foreground color to White (default).')
     fg_group.add_argument("--fg-black", action='store_true', help='Changed foreground color to Black.')
@@ -80,9 +80,9 @@ e.g. Fujin-ken is '6n23RP'.
     
     ## Draw command.
     if args.render == 'png':
-        draw_png.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color)
+        pass #draw_png.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color)
     elif args.render == 'svg':
-        draw_svg.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color)
+        draw_svg.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color, debug=args.debug)
 
 if __name__ == '__main__':
     main()
