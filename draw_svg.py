@@ -368,7 +368,7 @@ def draw_text(dst, base_x, ymax, text, font_size=32, margin_width=MARGIN_WIDTH, 
 
     return w
 
-def draw_command(output, ttf, font_size, ttc_index, command_list, fg_color, **kwargs):
+def draw_command(output, ttf, font_size, command_list, **kwargs):
     global is_debug
     is_debug = kwargs['debug']
     if (is_debug):

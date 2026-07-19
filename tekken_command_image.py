@@ -1,11 +1,9 @@
 #! python
 
-import sys
 import pyparsing as pp
 import argparse
 import collections
 
-import draw_png
 import draw_svg
 
 def flatten(l):
@@ -38,7 +36,7 @@ def parse_command(cmd_str):
 
 def main():
     desc = '''\
-Generate png-image input Tekken command text.
+Generate SVG-image input Tekken command text.
 Commands are supporting Tenkey-notation.
 This notation corresponds as follows.
 
@@ -52,26 +50,16 @@ e.g. Fujin-ken is '6n23RP'.
     ## Arguments
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=desc)
     parser.add_argument("--debug", "-d", action='store_true', help="Enable debug message.")
-    parser.add_argument("--output", "-o", required=True, type=str, help="Output png filename.")
-    parser.add_argument("--truetype-font", type=str, default="YuGothR.ttc", help="TrueType font file for text drawing.")
+    parser.add_argument("--output", "-o", required=True, type=str, help="Output svg filename.")
+
+    # @not implemented yet
+    parser.add_argument("--truetype-font", type=str, default="NotoSans-Regular.ttf", help="TrueType font file for text drawing.")
+
+    # @not implemented yet
     parser.add_argument("--font-size", type=int, default=48, help="TrueType font file for text drawing.")
-    parser.add_argument("--ttc-index", type=int, default=1, help="TrueType Collection (*.TTC) index.")
-    parser.add_argument("--render", choices=['png', 'svg'], default='svg', help="Output format.")
-    fg_group = parser.add_mutually_exclusive_group()
-    fg_group.add_argument("--fg-white", action='store_true', help='Changed foreground color to White (default).')
-    fg_group.add_argument("--fg-black", action='store_true', help='Changed foreground color to Black.')
-    fg_group.add_argument("--fg-grey", action='store_true', help='Changed foreground color to Grey/Gray.')
-    fg_group.add_argument("--fg-gray", action='store_true', help='Changed foreground color to Grey/Gray.')
+
     parser.add_argument("command", type=str, help="Tekken command.")
     args = parser.parse_args()
-
-    fg_color = (255, 255, 255)
-    if args.fg_white:
-        pass
-    elif args.fg_black:
-        fg_color = (0, 0, 0)
-    elif args.fg_grey or args.fg_gray:
-        fg_color = (128, 128, 128)
 
     ## Tekken command.
     command = parse_command(args.command)
@@ -79,10 +67,7 @@ e.g. Fujin-ken is '6n23RP'.
         print('parsed result:', command)
     
     ## Draw command.
-    if args.render == 'png':
-        pass #draw_png.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color)
-    elif args.render == 'svg':
-        draw_svg.draw_command(args.output, args.truetype_font, args.font_size, args.ttc_index, command, fg_color, debug=args.debug)
+    draw_svg.draw_command(args.output, args.truetype_font, args.font_size, command, debug=args.debug)
 
 if __name__ == '__main__':
     main()
