@@ -105,10 +105,3 @@ python tekken_command_image.py -d -o bryan_combo.png 'LP+LK + RK > 64RP'
 ## ライセンス
 
 ソースコード、および、ドキュメントは GPLv3 です。
-
-## 最後に
-
- * 機能追加のご要望、あるいは、不具合報告は [Issues](https://github.com/osatetsu/TekkenCommandImaging/issues) へしていただければと思います。
- * ko-fi にてご寄付いただけると、活動の励みになります。
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E1U0BU1)
