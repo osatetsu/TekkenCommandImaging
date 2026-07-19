@@ -1,5 +1,6 @@
 *.png
 *.pyc
-!images/*.png
 *.svg
 !assets/*
+!images/*.png
+!images/*.svg

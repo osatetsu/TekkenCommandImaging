@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" width="329.02618" height="96" viewBox="0 0 329.02618 96">
+<style type="text/css">.svg-text-normal {
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 600;
+}
+</style><path style="fill:#ffffff;stroke:#a3a3a3;stroke-width:2.4;stroke-linejoin:round" d="M 31.999999,23.818514 12,23.999999 v 16 l 19.999999,0 v 8 l 23.999999,-16 -23.999999,-15.781167 z" ns1:nodetypes="cccccccc" transform="translate(4.0, 16)  " />
+  <path style="fill:#ffffff;fill-opacity:0.98172;stroke:#a3a3a3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:9" d="m 44.512318,47.269462 -12.064523,-8.24563 -11.685287,8.428486 4.113918,-14.022083 -11.626919,-8.508823 14.607064,-0.420494 4.499456,-13.687228 4.913744,13.762204 14.407736,0.04965 -11.570203,8.926003 z" transform="translate(62.75049100000001, 16)  " />
+<path style="fill:#ffffff;stroke:#a3a3a3;stroke-width:2.4;stroke-linejoin:round" d="M 31.999999,23.818514 12,23.999999 v 16 l 19.999999,0 v 8 l 23.999999,-16 -23.999999,-15.781167 z" ns1:nodetypes="cccccccc" transform="translate(118.427998, 16) rotate(90, 33.999999, 32.109415500000004) " />
+  <path style="fill:#ffffff;stroke:#a3a3a3;stroke-width:2.4;stroke-linejoin:round" d="M 31.999999,23.818514 12,23.999999 v 16 l 19.999999,0 v 8 l 23.999999,-16 -23.999999,-15.781167 z" ns1:nodetypes="cccccccc" transform="translate(178.427996, 16) rotate(45, 33.999999, 32.109415500000004) " />
+  <circle style="fill:#ffffff;fill-opacity:1;stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="16.598188" cy="21.048805" r="14" transform="translate(250.427994, 16)" />
+    <circle style="fill:#ffffff;fill-opacity:1;stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="20.59819" cy="48.829727" r="14" transform="translate(250.427994, 16)" />
+    <circle style="fill:#ffffff;fill-opacity:1;stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" cx="44.598183" cy="15.267878" r="14" transform="translate(250.427994, 16)" />
+    <circle style="stroke:#a3a3a3;stroke-width:2.4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill:#000000" cx="48.598186" cy="43.048801" r="14" fill="#000000" transform="translate(250.427994, 16)" />
+  </svg>
