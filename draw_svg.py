@@ -11,15 +11,28 @@
 import copy
 import sys
 import xml.etree.ElementTree as ET
-import svgelements as se
 import pprint
 from logging import getLogger, StreamHandler, DEBUG, ERROR
+
+import svgelements as se
+from PIL import ImageFont
 
 MARGIN_WIDTH = 16
 EMPTY_SVG = """\
 <?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
 </svg>
+"""
+SVG_TEXT_FONT = 'NotoSans-Regular.ttf'
+SVG_TEXT_FILL_COLOR = '#ffffff'
+SVG_TEXT_STROKE_COLOR = '#808080'
+SVG_TEXT_STROKE_WIDTH = 2
+SVG_STYLE_CLASS = 'svg-text-normal'
+SVG_STYLE = """\
+.""" + SVG_STYLE_CLASS + """ {
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 600;
+}
 """
 
 is_debug = False
@@ -34,6 +47,26 @@ else:
 logger.propagate = False
 
 ET.register_namespace("", "http://www.w3.org/2000/svg")
+
+def get_text_bounding_box(text, font_path, font_size):
+    '''
+    任意のテキストに対しバウンディングボックスを得る。
+    大きさはレンダラーによって異なるため、呼び出し側にて少し余裕を持つこと。
+
+    text: 
+    font_path: font file
+    font_size: pixels
+
+    return: (width, height)
+    '''
+    font = ImageFont.truetype(font_path, font_size)
+    
+    left, top, right, bottom = font.getbbox(text)
+    
+    width = right - left
+    height = bottom - top
+    
+    return width, height
 
 def load_element(svg_path, target_id):
     tree = ET.parse(svg_path)
@@ -152,7 +185,10 @@ def load_shapes():
 
     ### XML root ###
     shapes['root'] = ET.fromstring(EMPTY_SVG)
-    shapes['root'] = ET.fromstring(EMPTY_SVG)
+    text = ET.Element('style')
+    text.set('type', 'text/css')
+    text.text = SVG_STYLE
+    shapes['root'].append(text)
 
     ### Arrow ###
     obj = load_element('assets/right_arrow.svg', 'target')
@@ -284,19 +320,34 @@ def draw_shape_rotate(img, shape, base_x, rotate_deg, margin_width=MARGIN_WIDTH,
 
     return shape['box']['w']
 
-def draw_text(dwg, base_x, text, font, fg_color, **kwargs):
+def draw_text(dst, base_x, text, ymax, font_size=32, margin_width=MARGIN_WIDTH, **kwargs):
     '''
-    params:
-        img:
-        base_x:
-        font:
-        pen:
-        brush:
-        kwargs:
+    dst:
+    base_x:
+    text:
+    ymax:
+    font_size:
+    margin_width:
+    kwargs:
     '''
-#    text = svgwrite.text.Text(text, base_x)
-#    dwg.add(text)
-    return None
+
+    render_y = int(ymax * 3 / 4)
+
+    w, h = get_text_bounding_box(text, SVG_TEXT_FONT, font_size)
+    logger.debug(f"draw_text: text:\"{text}\", font_size:{font_size}, w:{w}, h:{h}")
+    # 表示する環境に依存するが、文字の描画は stroke の幅分だけ大きくなるため、余裕を持たせる。
+    w += len(text) * (SVG_TEXT_STROKE_WIDTH + 4)
+
+    e = ET.Element('text')
+    e.set('class', SVG_STYLE_CLASS)
+    e.set('x', str(base_x + margin_width))
+    e.set('y', f"{render_y}")
+    e.set('font-size', f"{font_size}px")
+    e.set('style', f"stroke-width:{SVG_TEXT_STROKE_WIDTH}; stroke:{SVG_TEXT_STROKE_COLOR}; fill:{SVG_TEXT_FILL_COLOR};")
+    e.text = text
+    dst.append(e)
+
+    return w
 
 def draw_command(output, ttf, font_size, ttc_index, command_list, fg_color, **kwargs):
     global is_debug
@@ -349,11 +400,8 @@ def draw_command(output, ttf, font_size, ttc_index, command_list, fg_color, **kw
             draw_width = draw_shape(dst, symbol, base_x, margin_width=margin)
             logger.debug(f"{cmd}, {draw_width}, {symbol}")
         else:
-            ### any text
-            if font is None:
-                ######font = ImageFont.truetype(ttf, font_size, index=ttc_index)
-                pass
-            draw_text(dst, base_x, cmd, font, fg_color, margin_width=margin)
+            draw_width = draw_text(dst, base_x, cmd, ymax, margin_width=margin)
+            logger.debug(f"{cmd}, {draw_width}, {symbol}")
         if (is_debug):
             ## draw bounding box
             rect = ET.Element('rect')
