@@ -7,10 +7,6 @@
    viewBox="0 0 64 64"
    version="1.1"
    id="svg1"
-   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
-   sodipodi:docname="star.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -18,26 +14,6 @@
    xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs1" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.3"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="79.642857"
-     inkscape:cy="42.678571"
-     inkscape:document-units="mm"
-     inkscape:showpageshadow="0"
-     inkscape:pagecheckerboard="1"
-     inkscape:deskcolor="#505050"
-     inkscape:window-width="2560"
-     inkscape:window-height="1351"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" />
   <metadata
      id="metadata1">
     <rdf:RDF>
@@ -50,21 +26,7 @@
     </rdf:RDF>
   </metadata>
   <path
-     sodipodi:type="star"
-     style="fill:#ffffff;fill-opacity:0.98172;stroke:#a3a3a3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:9;stroke-dasharray:none;stroke-dashoffset:0"
      id="target"
-     inkscape:flatsided="false"
-     sodipodi:sides="5"
-     sodipodi:cx="15.591518"
-     sodipodi:cy="20.788691"
-     sodipodi:r1="20.203394"
-     sodipodi:r2="8.0076008"
-     sodipodi:arg1="0.93477871"
-     sodipodi:arg2="1.5787611"
-     inkscape:rounded="0"
-     inkscape:randomized="0"
-     d="M 27.592263,37.041667 15.52774,28.796037 3.8424528,37.224523 7.9563706,23.20244 -3.670548,14.693617 10.936516,14.273123 15.435972,0.58589542 20.349716,14.348099 34.757452,14.39775 23.187249,23.323753 Z"
-     inkscape:transform-center-x="-0.05478515"
-     inkscape:transform-center-y="-0.61596027"
-     transform="translate(16.456547,13.094763)" />
+     style="fill:#ffffff;fill-opacity:0.98172;stroke:#a3a3a3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:9"
+     d="m 44.512318,47.269462 -12.064523,-8.24563 -11.685287,8.428486 4.113918,-14.022083 -11.626919,-8.508823 14.607064,-0.420494 4.499456,-13.687228 4.913744,13.762204 14.407736,0.04965 -11.570203,8.926003 z" />
 </svg>
