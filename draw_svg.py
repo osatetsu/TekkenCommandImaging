@@ -18,6 +18,7 @@ from logging import getLogger, StreamHandler, DEBUG, ERROR
 import svgelements as se
 from PIL import ImageFont
 
+
 MARGIN_WIDTH = 16
 EMPTY_SVG = """\
 <?xml version="1.0" encoding="utf-8"?>
@@ -90,7 +91,7 @@ def load_element(svg_path, target_id):
 
     xml_element = root.find(f'.//*[@id="{target_id}"]')
     if xml_element is None:
-        sys.stderr.write("ERROR: Could not find id:\"{0}\" in \"{1}\".\n".format(target_id, svg_path))
+        logger.error("ERROR: Could not find id:\"{0}\".\n".format(target_id))
         return None
     xml_element.attrib.pop('id', None)
 
@@ -137,7 +138,7 @@ def load_buttons_element(svg_path):
     for key in ids:
         xml_element = root.find(f'.//*[@id="{key}"]')
         if xml_element is None:
-            sys.stderr.write("ERROR: Could not find id:\"{0}\" in \"{1}\".\n".format(key, svg_path))
+            logger.error("ERROR: Could not find id:\"{0}\" in \"{1}\".\n".format(key, svg_path))
             return None
         xml_element.attrib.pop('id', None)
         xml_buttons[key] = xml_element
@@ -186,7 +187,7 @@ def load_buttons_element(svg_path):
 #    pprint.pprint(obj)
     return obj
 
-def load_shapes():
+def load_shapes(assets_dir='assets'):
     '''
     Currently using fixed filenames.
     - right_arrow.svg : Directory
@@ -207,7 +208,7 @@ def load_shapes():
     shapes['root'].append(text)
 
     ### Arrow ###
-    obj = load_element('assets/right_arrow.svg', 'target')
+    obj = load_element(f'{assets_dir}/right_arrow.svg', 'target')
     if obj is None:
         return None
     shapes['arrow'] = obj
@@ -216,7 +217,7 @@ def load_shapes():
         ymax = h
 
     ### Neutral ###
-    obj = load_element('assets/star.svg', 'target')
+    obj = load_element(f'{assets_dir}/star.svg', 'target')
     if obj is None:
         return None
     shapes['neutral'] = obj
@@ -225,7 +226,7 @@ def load_shapes():
         ymax = h
 
     ### Bracket ###
-    obj = load_element('assets/bracket.svg', 'target')
+    obj = load_element(f'{assets_dir}/bracket.svg', 'target')
     if obj is None:
         return None
     shapes['bracket'] = obj
@@ -234,7 +235,7 @@ def load_shapes():
         ymax = h
 
     ### Delimiter ###
-    obj = load_element('assets/delimiter.svg', 'target')
+    obj = load_element(f'{assets_dir}/delimiter.svg', 'target')
     if obj is None:
         return None
     shapes['delimiter'] = obj
@@ -243,7 +244,7 @@ def load_shapes():
         ymax = h
 
     ### Buttuns ###
-    obj = load_buttons_element('assets/4buttons.svg')
+    obj = load_buttons_element(f'{assets_dir}/4buttons.svg')
     if obj is None:
         return None
     shapes['buttons'] = obj
@@ -377,7 +378,9 @@ def draw_command(output, ttf, font_size, command_list, **kwargs):
         logger.setLevel(DEBUG)
         logger.addHandler(log_handler)
 
-    shapes, ymax = load_shapes()
+    assets_dir = kwargs.get('assets_dir', 'assets')
+    
+    shapes, ymax = load_shapes(assets_dir=assets_dir)
     if shapes is None:
         sys.stderr.write("Abort!\n")
         return

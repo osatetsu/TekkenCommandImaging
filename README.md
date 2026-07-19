@@ -73,10 +73,23 @@ python tekken_command_image.py -o alisa_basic_combo.svg '3RP > 4LP > "ws"LPRP > 
 
 ![アリサ基本コンボ](images/alisa_basic_combo.svg)
 
+## ボタンや方向の図形を変更したい場合
+
+1. assets フォルダをまるごと任意の名前のフォルダへコピーします。例: `assets.new`
+2. assets.new 内の .svg ファイルを編集してください。
+   SVGファイルの編集には [Inkscape](https://inkscape.org/ja/) などを利用してください。
+3. 編集後は `assets` オプションに `assets.new` を指定し、ツールを実行してください。
+
+```.sh
+python tekken_command_image.py -o foo.svg --assets assets.new 'LP LP RP'
+```
+
+
 ## 制限事項
 
 - このツールは、入力されるコマンドの妥当性については、検証しません。
 - 任意テキストは、表示する環境によっては他の図形と重なったり、意図しない表示になる可能性があります。SVG という画像フォーマットの制約です。
+- 現状、ボタン押下の色は固定で、黒になります。
 
 ## 禁止事項
 

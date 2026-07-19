@@ -3,6 +3,7 @@
 import pyparsing as pp
 import argparse
 import collections
+from pathlib import Path
 
 import draw_svg
 
@@ -51,6 +52,7 @@ e.g. Fujin-ken is '6n23RP'.
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, description=desc)
     parser.add_argument("--debug", "-d", action='store_true', help="Enable debug message.")
     parser.add_argument("--output", "-o", required=True, type=str, help="Output svg filename.")
+    parser.add_argument("--assets", type=str, default="assets", help="assets directory.")
 
     # @not implemented yet
     parser.add_argument("--truetype-font", type=str, default="NotoSans-Regular.ttf", help="TrueType font file for text drawing.")
@@ -66,8 +68,16 @@ e.g. Fujin-ken is '6n23RP'.
     if args.debug:
         print('parsed result:', command)
     
+    assets_dir = args.assets
+    if not Path(assets_dir).is_dir():
+        parent_directory = Path(__file__).parent
+        assets_dir = Path(parent_directory) / args.assets
+        if not assets_dir.is_dir():
+            print(f'Error: assets directory not found: {assets_dir}')
+        return
+
     ## Draw command.
-    draw_svg.draw_command(args.output, args.truetype_font, args.font_size, command, debug=args.debug)
+    draw_svg.draw_command(args.output, args.truetype_font, args.font_size, command, debug=args.debug, assets_dir=assets_dir)
 
 if __name__ == '__main__':
     main()
